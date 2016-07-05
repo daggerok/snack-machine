@@ -6,3 +6,5 @@ src/main/resources/static/
 ui/node_modules/
 *.log*
 gradlew*
+snack-machine.i*
+!snack-machine.ipr
