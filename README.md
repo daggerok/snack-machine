@@ -1,10 +1,12 @@
 snack-machine [![travis build](https://travis-ci.org/daggerok/snack-machine.svg?branch=master)](https://travis-ci.org/daggerok/snack-machine)
 =============
 
+in progress...
+
 DDD in practice spring-boot + react
 
 ```sh
-docker-compose up -d --build
+docker-compose -f docker/docker-compose.yml up -d --build
 gradle withDocker build bootRun
 ```
 

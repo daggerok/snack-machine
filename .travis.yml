@@ -1,17 +1,38 @@
+group: edge
+dist: trusty
 language: java
 jdk: oraclejdk8
-language: node_js
-node_js: 6
-services: docker
-before_script: docker-compose up -d
-script: gradle withDocker build
-after_script:
-  - docker-compose kill
-  - true & cat ui/*.log
-cache.directories:
-  - $HOME/.gradle
-  - $HOME/.m2
-  - ui/node_modules/
-  - .gradle/
-  - gradle/
-notifications.on_failure: never
+install: true
+#env:
+#  SPRING_PROFILES_ACTIVE: default
+before_install:
+  - sudo apt update
+  - sudo apt install -y python-pip curl jq
+  # docker-compose
+  - sudo apt install -y python-pip
+  - sudo pip install docker-compose
+  - sudo usermod -aG docker $(whoami)
+  # kill whatever punning on pg port
+  - true | sudo kill $(sudo lsof -t -i:5432)
+  # gradle
+  - curl -s "https://get.sdkman.io" | bash
+  - mkdir -p "$HOME/.sdkman/etc"
+  - touch "$HOME/.sdkman/etc/config"
+  - sed -i -e 's/^sdkman_auto_answer=false$/sdkman_auto_answer=true/g' "$HOME/.sdkman/etc/config"
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+  - sdk use gradle
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+  # node
+  - nvm install 6
+script:
+  - docker-compose -f docker/docker-compose.yml up -d --build
+  - gradle withDocker build
+cache:
+  directories:
+    - $HOME/.gradle
+    - $HOME/.m2
+    - ui/node_modules/
+    - .gradle/
+    - gradle/
+notifications:
+  on_failure: never

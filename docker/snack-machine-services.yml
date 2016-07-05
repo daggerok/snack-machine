@@ -1,0 +1,13 @@
+web:
+  container_name: snack-machine-rabbitmq
+  image: rabbitmq:3
+  ports:
+    - "5672:5672"
+  links:
+    - snack-machine-mongo
+
+snack-machine-mongo:
+  container_name: snack-machine-mongo
+  image: mongo:2
+  ports:
+    - "27017:27017"

@@ -1,6 +1,6 @@
 version: '2'
 services:
-  rabbitmq:
+  snack-machine-rabbitmq:
     container_name: snack-machine-rabbitmq
     image: rabbitmq:3
     #restart: always
@@ -9,7 +9,7 @@ services:
       #- "5671:5671"
       #- "4369:4369"
       - "5672:5672"
-  mongo:
+  snack-machine-mongo:
     container_name: snack-machine-mongo
     image: mongo:2
     #restart: always
