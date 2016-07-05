@@ -1,0 +1,16 @@
+language: java
+jdk: oraclejdk8
+language: node_js
+node_js: 6
+before_script: docker-compose up -d
+script: gradle withDocker build
+after_script:
+  - docker-compose kill
+  - true & cat ui/*.log
+cache.directories:
+  - $HOME/.gradle
+  - $HOME/.m2
+  - ui/node_modules/
+  - .gradle/
+  - gradle/
+notifications.on_failure: never

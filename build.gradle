@@ -1,0 +1,49 @@
+buildscript {
+  ext { springBootVersion = '1.3.6.RELEASE' }
+  repositories { jcenter() }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+  baseName = 'snack-machine'
+  version = '1'
+}
+
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories { jcenter() }
+
+dependencies {
+  compile('org.springframework.boot:spring-boot-starter-actuator')
+  compile('org.springframework.boot:spring-boot-starter-amqp')
+  compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+  compile('org.springframework.boot:spring-boot-starter-data-rest')
+  compile('org.springframework.boot:spring-boot-devtools')
+  compile('org.springframework.boot:spring-boot-starter-hateoas')
+  compile('org.projectlombok:lombok:1.16.6')
+  compile('org.springframework.boot:spring-boot-starter-web')
+
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task ui(type: Exec) {
+  workingDir './ui'
+  commandLine 'npm', 'run', 'build'
+}
+
+task withDocker << {
+  bootRun.systemProperty 'spring.profiles.active', 'docker'
+}
+
+//// or simply ise command: `gradle withDocker build bootRun`
+//bootRun.dependsOn withDocker
+//build.dependsOn withDocker
+
+build.dependsOn ui
+build.shouldRunAfter ui

@@ -1,0 +1,17 @@
+version: '2'
+services:
+  rabbitmq:
+    container_name: snack-machine-rabbitmq
+    image: rabbitmq:3
+    #restart: always
+    ports:
+      #- "25672:25672"
+      #- "5671:5671"
+      #- "4369:4369"
+      - "5672:5672"
+  mongo:
+    container_name: snack-machine-mongo
+    image: mongo:2
+    #restart: always
+    ports:
+      - "27017:27017"
